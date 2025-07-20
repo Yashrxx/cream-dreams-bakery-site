@@ -1,19 +1,17 @@
 import FloatingNav from '@/components/FloatingNav';
-import Hero from '@/components/Hero';
-import Testimonials from '@/components/Testimonials';
+import ProductGrid from '@/components/ProductGrid';
 import Footer from '@/components/Footer';
 
-const Index = () => {
+const ProductsPage = () => {
   return (
     <div className="min-h-screen">
       <FloatingNav />
-      <Hero />
-      <div id="testimonials">
-        <Testimonials />
+      <div className="pt-20">
+        <ProductGrid />
       </div>
       <Footer />
     </div>
   );
 };
 
-export default Index;
+export default ProductsPage;

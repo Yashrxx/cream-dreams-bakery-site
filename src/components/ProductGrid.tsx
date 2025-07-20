@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Heart, ShoppingCart, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import cakeCollection from '@/assets/cake-collection.jpg';
+import productShowcase from '@/assets/product-showcase.jpg';
 
 const ProductGrid = () => {
   const [activeCategory, setActiveCategory] = useState('all');
@@ -24,7 +24,7 @@ const ProductGrid = () => {
       originalPrice: 109.99,
       rating: 5,
       reviews: 24,
-      image: cakeCollection,
+      image: productShowcase,
       isNew: true,
     },
     {
@@ -34,7 +34,7 @@ const ProductGrid = () => {
       price: 45.99,
       rating: 4.8,
       reviews: 18,
-      image: cakeCollection,
+      image: productShowcase,
       isPopular: true,
     },
     {
@@ -44,7 +44,7 @@ const ProductGrid = () => {
       price: 24.99,
       rating: 4.9,
       reviews: 32,
-      image: cakeCollection,
+      image: productShowcase,
     },
     {
       id: 4,
@@ -53,7 +53,7 @@ const ProductGrid = () => {
       price: 125.99,
       rating: 5,
       reviews: 12,
-      image: cakeCollection,
+      image: productShowcase,
     },
     {
       id: 5,
@@ -62,7 +62,7 @@ const ProductGrid = () => {
       price: 38.99,
       rating: 4.7,
       reviews: 28,
-      image: cakeCollection,
+      image: productShowcase,
     },
     {
       id: 6,
@@ -71,7 +71,7 @@ const ProductGrid = () => {
       price: 199.99,
       rating: 5,
       reviews: 8,
-      image: cakeCollection,
+      image: productShowcase,
       isNew: true,
     },
   ];

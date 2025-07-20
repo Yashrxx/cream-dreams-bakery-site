@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import heroImage from '@/assets/hero-cake.jpg';
+import heroImage from '@/assets/hero-chocolate-cake.jpg';
 
 const Hero = () => {
   const [confettiPieces, setConfettiPieces] = useState<number[]>([]);
@@ -48,13 +48,17 @@ const Hero = () => {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-              <Button className="btn-primary font-lato font-semibold px-8 py-6 text-lg group">
-                Explore Our Cakes
-                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </Button>
-              <Button variant="outline" className="border-rose-gold text-rose-gold hover:bg-rose-gold hover:text-white font-lato font-semibold px-8 py-6 text-lg">
-                Custom Orders
-              </Button>
+              <a href="/products">
+                <Button className="btn-primary font-lato font-semibold px-8 py-6 text-lg group">
+                  Explore Our Cakes
+                  <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </a>
+              <a href="/contact">
+                <Button variant="outline" className="border-rose-gold text-rose-gold hover:bg-rose-gold hover:text-white font-lato font-semibold px-8 py-6 text-lg">
+                  Custom Orders
+                </Button>
+              </a>
             </div>
 
             {/* Stats */}

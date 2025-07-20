@@ -8,17 +8,17 @@ const Footer = () => {
   ];
 
   const quickLinks = [
-    { name: 'Home', href: '#home' },
-    { name: 'Our Cakes', href: '#products' },
-    { name: 'About Us', href: '#about' },
-    { name: 'Contact', href: '#contact' },
+    { name: 'Home', href: '/' },
+    { name: 'Our Cakes', href: '/products' },
+    { name: 'About Us', href: '/about' },
+    { name: 'Contact', href: '/contact' },
   ];
 
   const cakeCategories = [
-    { name: 'Birthday Cakes', href: '#products' },
-    { name: 'Wedding Cakes', href: '#products' },
-    { name: 'Cupcakes', href: '#products' },
-    { name: 'Custom Orders', href: '#contact' },
+    { name: 'Birthday Cakes', href: '/products' },
+    { name: 'Wedding Cakes', href: '/products' },
+    { name: 'Cupcakes', href: '/products' },
+    { name: 'Custom Orders', href: '/contact' },
   ];
 
   return (

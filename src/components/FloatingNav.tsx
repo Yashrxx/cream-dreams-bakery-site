@@ -16,11 +16,11 @@ const FloatingNav = () => {
   }, []);
 
   const navItems = [
-    { name: 'Home', href: '#home' },
-    { name: 'Cakes', href: '#products' },
-    { name: 'About', href: '#about' },
-    { name: 'Reviews', href: '#testimonials' },
-    { name: 'Contact', href: '#contact' },
+    { name: 'Home', href: '/' },
+    { name: 'Cakes', href: '/products' },
+    { name: 'About', href: '/about' },
+    { name: 'Reviews', href: '/#testimonials' },
+    { name: 'Contact', href: '/contact' },
   ];
 
   return (
