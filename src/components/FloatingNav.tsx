@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { ShoppingCart, Menu, X, Heart, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 
 const FloatingNav = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -16,11 +17,11 @@ const FloatingNav = () => {
   }, []);
 
   const navItems = [
-    { name: 'Home', href: '/' },
-    { name: 'Cakes', href: '/products' },
-    { name: 'About', href: '/about' },
-    { name: 'Reviews', href: '/#testimonials' },
-    { name: 'Contact', href: '/contact' },
+    { name: 'Home', to: '/' },
+    { name: 'Cakes', to: '/products' },
+    { name: 'About', to: '/about' },
+    { name: 'Reviews', to: '/#testimonials' },
+    { name: 'Contact', to: '/contact' },
   ];
 
   return (
@@ -39,13 +40,13 @@ const FloatingNav = () => {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
-              <a
+              <Link
                 key={item.name}
-                href={item.href}
+                to={item.to}
                 className="text-cocoa hover:text-rose-gold transition-colors duration-300 font-lato font-medium"
               >
                 {item.name}
-              </a>
+              </Link>
             ))}
           </div>
 
@@ -81,14 +82,14 @@ const FloatingNav = () => {
           <div className="md:hidden mt-4 pb-4 border-t border-border">
             <div className="flex flex-col space-y-4 pt-4">
               {navItems.map((item) => (
-                <a
+                <Link
                   key={item.name}
-                  href={item.href}
+                  to={item.to}
                   className="text-cocoa hover:text-rose-gold transition-colors duration-300 font-lato font-medium"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {item.name}
-                </a>
+                </Link>
               ))}
             </div>
           </div>
