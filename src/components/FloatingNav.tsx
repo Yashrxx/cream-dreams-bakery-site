@@ -36,11 +36,11 @@ const FloatingNav = () => {
   ];
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-      isScrolled 
-        ? 'bg-ivory/95 backdrop-blur-md shadow-lg' 
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled || isMenuOpen
+        ? 'bg-ivory/95 backdrop-blur-md shadow-lg'
         : 'bg-transparent'
-    }`}>
+      }`}>
+
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
@@ -66,9 +66,9 @@ const FloatingNav = () => {
             <Button variant="ghost" size="icon" className="hover:bg-peach-light">
               <Search className="w-5 h-5" />
             </Button>
-            <Button 
-              variant="ghost" 
-              size="icon" 
+            <Button
+              variant="ghost"
+              size="icon"
               className="hover:bg-peach-light relative"
               onClick={handleWishlistClick}
             >
@@ -79,9 +79,9 @@ const FloatingNav = () => {
                 </span>
               )}
             </Button>
-            <Button 
-              variant="ghost" 
-              size="icon" 
+            <Button
+              variant="ghost"
+              size="icon"
               className="hover:bg-peach-light relative"
               onClick={handleCartClick}
             >
