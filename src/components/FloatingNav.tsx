@@ -6,6 +6,8 @@ import { Link } from 'react-router-dom';
 const FloatingNav = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [cartItems, setCartItems] = useState(3);
+  const [wishlistItems, setWishlistItems] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -16,11 +18,20 @@ const FloatingNav = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const handleWishlistClick = () => {
+    // TODO: Open wishlist sidebar/modal
+    console.log('Wishlist clicked');
+  };
+
+  const handleCartClick = () => {
+    // TODO: Open cart sidebar/modal
+    console.log('Cart clicked');
+  };
+
   const navItems = [
     { name: 'Home', to: '/' },
     { name: 'Cakes', to: '/products' },
     { name: 'About', to: '/about' },
-    { name: 'Reviews', to: '/#testimonials' },
     { name: 'Contact', to: '/contact' },
   ];
 
@@ -55,14 +66,31 @@ const FloatingNav = () => {
             <Button variant="ghost" size="icon" className="hover:bg-peach-light">
               <Search className="w-5 h-5" />
             </Button>
-            <Button variant="ghost" size="icon" className="hover:bg-peach-light">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="hover:bg-peach-light relative"
+              onClick={handleWishlistClick}
+            >
               <Heart className="w-5 h-5" />
+              {wishlistItems > 0 && (
+                <span className="absolute -top-2 -right-2 bg-rose-gold text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  {wishlistItems}
+                </span>
+              )}
             </Button>
-            <Button variant="ghost" size="icon" className="hover:bg-peach-light relative">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="hover:bg-peach-light relative"
+              onClick={handleCartClick}
+            >
               <ShoppingCart className="w-5 h-5" />
-              <span className="absolute -top-2 -right-2 bg-rose-gold text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                3
-              </span>
+              {cartItems > 0 && (
+                <span className="absolute -top-2 -right-2 bg-rose-gold text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  {cartItems}
+                </span>
+              )}
             </Button>
 
             {/* Mobile Menu Button */}
