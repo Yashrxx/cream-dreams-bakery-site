@@ -2,9 +2,15 @@ import { useState } from 'react';
 import { Heart, ShoppingCart, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { useToast } from '@/hooks/use-toast';
 import productShowcase from '@/assets/product-showcase.jpg';
 
-const ProductGrid = () => {
+interface ProductGridProps {
+  onAddToCart?: (item: { id: string; name: string; price: number; image: string }) => void;
+}
+
+const ProductGrid = ({ onAddToCart }: ProductGridProps) => {
+  const { toast } = useToast();
   const [activeCategory, setActiveCategory] = useState('all');
 
   const categories = [
@@ -193,7 +199,25 @@ const ProductGrid = () => {
                       )}
                     </div>
 
-                    <Button className="btn-primary px-4 py-2 font-lato font-medium group">
+                    <Button 
+                      className="btn-primary px-4 py-2 font-lato font-medium group"
+                      onClick={() => {
+                        const cartItem = {
+                          id: product.id.toString(),
+                          name: product.name,
+                          price: product.price,
+                          image: product.image
+                        };
+                        if (onAddToCart) {
+                          onAddToCart(cartItem);
+                        } else {
+                          toast({
+                            title: "Added to Cart",
+                            description: `${product.name} has been added to your cart.`,
+                          });
+                        }
+                      }}
+                    >
                       <ShoppingCart className="w-4 h-4 mr-2 group-hover:scale-110 transition-transform" />
                       Add to Cart
                     </Button>

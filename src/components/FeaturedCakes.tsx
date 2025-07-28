@@ -2,11 +2,17 @@ import { Star, Heart, ShoppingCart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { useToast } from '@/hooks/use-toast';
 import cakeCollection from '@/assets/cake-collection.jpg';
 import heroImage from '@/assets/hero-cake.jpg';
 import productShowcase from '@/assets/product-showcase.jpg';
 
-const FeaturedCakes = () => {
+interface FeaturedCakesProps {
+  onAddToCart?: (item: { id: string; name: string; price: number; image: string }) => void;
+}
+
+const FeaturedCakes = ({ onAddToCart }: FeaturedCakesProps) => {
+  const { toast } = useToast();
   const featuredCakes = [
     {
       id: 1,
@@ -135,7 +141,25 @@ const FeaturedCakes = () => {
                       )}
                     </div>
                     
-                    <Button className="btn-primary">
+                    <Button 
+                      className="btn-primary"
+                      onClick={() => {
+                        const cartItem = {
+                          id: cake.id.toString(),
+                          name: cake.name,
+                          price: cake.price,
+                          image: cake.image
+                        };
+                        if (onAddToCart) {
+                          onAddToCart(cartItem);
+                        } else {
+                          toast({
+                            title: "Added to Cart",
+                            description: `${cake.name} has been added to your cart.`,
+                          });
+                        }
+                      }}
+                    >
                       <ShoppingCart className="w-4 h-4 mr-2" />
                       Add to Cart
                     </Button>

@@ -6,7 +6,25 @@ import CartSidebar from './CartSidebar';
 import WishlistSidebar from './WishlistSidebar';
 import { useToast } from '@/hooks/use-toast';
 
-const FloatingNav = () => {
+interface CartItem {
+  id: string;
+  name: string;
+  price: number;
+  quantity: number;
+  image: string;
+}
+
+interface FloatingNavProps {
+  cartItems?: CartItem[];
+  onUpdateCartQuantity?: (id: string, quantity: number) => void;
+  onRemoveFromCart?: (id: string) => void;
+}
+
+const FloatingNav = ({ 
+  cartItems: externalCartItems, 
+  onUpdateCartQuantity: externalOnUpdateCartQuantity, 
+  onRemoveFromCart: externalOnRemoveFromCart 
+}: FloatingNavProps) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -14,7 +32,7 @@ const FloatingNav = () => {
   const { toast } = useToast();
 
   // Sample data - replace with actual state management
-  const [cartItems, setCartItems] = useState([
+  const [internalCartItems, setInternalCartItems] = useState<CartItem[]>([
     {
       id: '1',
       name: 'Chocolate Cake',
@@ -30,6 +48,8 @@ const FloatingNav = () => {
       image: '/src/assets/cake-collection.jpg'
     }
   ]);
+
+  const cartItems = externalCartItems || internalCartItems;
 
   const [wishlistItems, setWishlistItems] = useState([
     {
@@ -59,17 +79,25 @@ const FloatingNav = () => {
   };
 
   const handleUpdateCartQuantity = (id: string, quantity: number) => {
-    if (quantity === 0) {
-      setCartItems(cartItems.filter(item => item.id !== id));
+    if (externalOnUpdateCartQuantity) {
+      externalOnUpdateCartQuantity(id, quantity);
     } else {
-      setCartItems(cartItems.map(item =>
-        item.id === id ? { ...item, quantity } : item
-      ));
+      if (quantity === 0) {
+        setInternalCartItems(cartItems.filter(item => item.id !== id));
+      } else {
+        setInternalCartItems(cartItems.map(item =>
+          item.id === id ? { ...item, quantity } : item
+        ));
+      }
     }
   };
 
   const handleRemoveFromCart = (id: string) => {
-    setCartItems(cartItems.filter(item => item.id !== id));
+    if (externalOnRemoveFromCart) {
+      externalOnRemoveFromCart(id);
+    } else {
+      setInternalCartItems(cartItems.filter(item => item.id !== id));
+    }
   };
 
   const handleRemoveFromWishlist = (id: string) => {
@@ -81,10 +109,18 @@ const FloatingNav = () => {
     if (existingItem) {
       handleUpdateCartQuantity(wishlistItem.id, existingItem.quantity + 1);
     } else {
-      setCartItems([...cartItems, {
-        ...wishlistItem,
-        quantity: 1
-      }]);
+      if (externalCartItems) {
+        // If external cart is provided, we can't directly modify it
+        toast({
+          title: "Added to Cart",
+          description: `${wishlistItem.name} has been added to your cart.`,
+        });
+      } else {
+        setInternalCartItems([...cartItems, {
+          ...wishlistItem,
+          quantity: 1
+        }]);
+      }
     }
   };
 
