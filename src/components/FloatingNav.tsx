@@ -2,12 +2,44 @@ import { useState, useEffect } from 'react';
 import { ShoppingCart, Menu, X, Heart, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
+import CartSidebar from './CartSidebar';
+import WishlistSidebar from './WishlistSidebar';
+import { useToast } from '@/hooks/use-toast';
 
 const FloatingNav = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [cartItems, setCartItems] = useState(3);
-  const [wishlistItems, setWishlistItems] = useState(0);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isWishlistOpen, setIsWishlistOpen] = useState(false);
+  const { toast } = useToast();
+
+  // Sample data - replace with actual state management
+  const [cartItems, setCartItems] = useState([
+    {
+      id: '1',
+      name: 'Chocolate Cake',
+      price: 25.99,
+      quantity: 2,
+      image: '/src/assets/hero-chocolate-cake.jpg'
+    },
+    {
+      id: '2',
+      name: 'Vanilla Cupcake',
+      price: 4.99,
+      quantity: 1,
+      image: '/src/assets/cake-collection.jpg'
+    }
+  ]);
+
+  const [wishlistItems, setWishlistItems] = useState([
+    {
+      id: '3',
+      name: 'Red Velvet Cake',
+      price: 29.99,
+      image: '/src/assets/hero-cake.jpg',
+      rating: 5
+    }
+  ]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -19,13 +51,41 @@ const FloatingNav = () => {
   }, []);
 
   const handleWishlistClick = () => {
-    // TODO: Open wishlist sidebar/modal
-    console.log('Wishlist clicked');
+    setIsWishlistOpen(true);
   };
 
   const handleCartClick = () => {
-    // TODO: Open cart sidebar/modal
-    console.log('Cart clicked');
+    setIsCartOpen(true);
+  };
+
+  const handleUpdateCartQuantity = (id: string, quantity: number) => {
+    if (quantity === 0) {
+      setCartItems(cartItems.filter(item => item.id !== id));
+    } else {
+      setCartItems(cartItems.map(item =>
+        item.id === id ? { ...item, quantity } : item
+      ));
+    }
+  };
+
+  const handleRemoveFromCart = (id: string) => {
+    setCartItems(cartItems.filter(item => item.id !== id));
+  };
+
+  const handleRemoveFromWishlist = (id: string) => {
+    setWishlistItems(wishlistItems.filter(item => item.id !== id));
+  };
+
+  const handleAddToCart = (wishlistItem: any) => {
+    const existingItem = cartItems.find(item => item.id === wishlistItem.id);
+    if (existingItem) {
+      handleUpdateCartQuantity(wishlistItem.id, existingItem.quantity + 1);
+    } else {
+      setCartItems([...cartItems, {
+        ...wishlistItem,
+        quantity: 1
+      }]);
+    }
   };
 
   const navItems = [
@@ -73,9 +133,9 @@ const FloatingNav = () => {
               onClick={handleWishlistClick}
             >
               <Heart className="w-5 h-5" />
-              {wishlistItems > 0 && (
+              {wishlistItems.length > 0 && (
                 <span className="absolute -top-2 -right-2 bg-rose-gold text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                  {wishlistItems}
+                  {wishlistItems.length}
                 </span>
               )}
             </Button>
@@ -86,9 +146,9 @@ const FloatingNav = () => {
               onClick={handleCartClick}
             >
               <ShoppingCart className="w-5 h-5" />
-              {cartItems > 0 && (
+              {cartItems.length > 0 && (
                 <span className="absolute -top-2 -right-2 bg-rose-gold text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                  {cartItems}
+                  {cartItems.length}
                 </span>
               )}
             </Button>
@@ -123,6 +183,22 @@ const FloatingNav = () => {
           </div>
         )}
       </div>
+
+      <CartSidebar
+        isOpen={isCartOpen}
+        onClose={() => setIsCartOpen(false)}
+        items={cartItems}
+        onUpdateQuantity={handleUpdateCartQuantity}
+        onRemoveItem={handleRemoveFromCart}
+      />
+
+      <WishlistSidebar
+        isOpen={isWishlistOpen}
+        onClose={() => setIsWishlistOpen(false)}
+        items={wishlistItems}
+        onRemoveItem={handleRemoveFromWishlist}
+        onAddToCart={handleAddToCart}
+      />
     </nav>
   );
 };
