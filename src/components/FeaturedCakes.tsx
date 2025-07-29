@@ -152,12 +152,11 @@ const FeaturedCakes = ({ onAddToCart }: FeaturedCakesProps) => {
                         };
                         if (onAddToCart) {
                           onAddToCart(cartItem);
-                        } else {
-                          toast({
-                            title: "Added to Cart",
-                            description: `${cake.name} has been added to your cart.`,
-                          });
                         }
+                        toast({
+                          title: "Added to Cart! 🎂",
+                          description: `${cake.name} has been added to your cart.`,
+                        });
                       }}
                     >
                       <ShoppingCart className="w-4 h-4 mr-2" />
