@@ -3,6 +3,8 @@ import { Heart, ShoppingCart, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
+import { useImageManager } from '@/hooks/useImageManager';
+import ImageWithFallback from '@/components/ImageWithFallback';
 import productShowcase from '@/assets/product-showcase.jpg';
 
 interface ProductGridProps {
@@ -12,6 +14,7 @@ interface ProductGridProps {
 const ProductGrid = ({ onAddToCart }: ProductGridProps) => {
   const { toast } = useToast();
   const [activeCategory, setActiveCategory] = useState('all');
+  const { images: productImages, loading } = useImageManager('product-images', 'products');
 
   const categories = [
     { id: 'all', name: 'All Cakes' },
@@ -21,7 +24,7 @@ const ProductGrid = ({ onAddToCart }: ProductGridProps) => {
     { id: 'custom', name: 'Custom' },
   ];
 
-  const products = [
+  const defaultProducts = [
     {
       id: 1,
       name: 'Rose Gold Dream',
@@ -82,6 +85,15 @@ const ProductGrid = ({ onAddToCart }: ProductGridProps) => {
     },
   ];
 
+  // Merge default products with dynamic images when available
+  const products = defaultProducts.map((product, index) => {
+    const dynamicImage = productImages[index];
+    return {
+      ...product,
+      image: dynamicImage ? dynamicImage.url : product.image
+    };
+  });
+
   const filteredProducts = activeCategory === 'all' 
     ? products 
     : products.filter(product => product.category === activeCategory);
@@ -122,10 +134,11 @@ const ProductGrid = ({ onAddToCart }: ProductGridProps) => {
           {filteredProducts.map((product) => (
             <Card key={product.id} className="group card-hover bg-white/80 backdrop-blur-sm border-0 rounded-2xl overflow-hidden">
               <div className="relative">
-                <img
+                <ImageWithFallback
                   src={product.image}
                   alt={product.name}
                   className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
+                  fallbackSrc={productShowcase}
                 />
                 
                 {/* Badges */}
