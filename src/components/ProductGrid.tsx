@@ -40,15 +40,15 @@ const ProductGrid = ({ onAddToCart }: { onAddToCart?: (item: any) => void }) => 
 
 
   const products = defaultProducts.map((product) => {
-    const imageObj = productImages.find((img) => img.name === product.imageKey);
-    const imageFromSupabase = imageObj?.url;
-    const imageFromURL = product.imageURL;
+  const imageObj = productImages.find((img) => img.path === product.imageKey);
+  const imageFromSupabase = imageObj?.url;
+  const imageFromURL = product.imageURL;
 
-    return {
-      ...product,
-      image: imageFromURL || imageFromSupabase || productShowcase,
-    };
-  });
+  return {
+    ...product,
+    image: imageFromURL || imageFromSupabase || productShowcase,
+  };
+});
 
   const filteredProducts = products.filter((product) => {
     const matchesCategory = activeCategory === "all" || product.category === activeCategory;
