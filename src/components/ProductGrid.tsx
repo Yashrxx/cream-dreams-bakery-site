@@ -18,7 +18,7 @@ const ProductGrid = ({ onAddToCart }: { onAddToCart?: (item: any) => void }) => 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch("https://cake-n-cream-backend.onrender.com/api/products");
+        const res = await fetch("https://cream-dreams-bakery-site.onrender.com/api/products");
         const data = await res.json();
         setDefaultProducts(data);
       } catch (error) {
@@ -27,6 +27,7 @@ const ProductGrid = ({ onAddToCart }: { onAddToCart?: (item: any) => void }) => 
     };
     fetchProducts();
   }, []);
+
 
   const categories = [
     { id: "all", name: "All" },
@@ -69,11 +70,10 @@ const ProductGrid = ({ onAddToCart }: { onAddToCart?: (item: any) => void }) => 
             <Button
               key={category.id}
               variant={activeCategory === category.id ? "default" : "outline"}
-              className={`font-lato font-medium px-6 py-2 rounded-full transition-all duration-300 ${
-                activeCategory === category.id
+              className={`font-lato font-medium px-6 py-2 rounded-full transition-all duration-300 ${activeCategory === category.id
                   ? "btn-primary"
                   : "border-rose-gold text-rose-gold hover:bg-rose-gold hover:text-white"
-              }`}
+                }`}
               onClick={() => setActiveCategory(category.id)}
             >
               {category.name}
@@ -127,9 +127,8 @@ const ProductGrid = ({ onAddToCart }: { onAddToCart?: (item: any) => void }) => 
                         {[...Array(5)].map((_, i) => (
                           <Star
                             key={i}
-                            className={`w-4 h-4 ${
-                              i < Math.floor(product.rating) ? "text-yellow-400 fill-current" : "text-gray-300"
-                            }`}
+                            className={`w-4 h-4 ${i < Math.floor(product.rating) ? "text-yellow-400 fill-current" : "text-gray-300"
+                              }`}
                           />
                         ))}
                       </div>
