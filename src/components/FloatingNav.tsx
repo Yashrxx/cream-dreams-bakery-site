@@ -176,26 +176,26 @@ const FloatingNav = ({
 
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled || isMenuOpen
-        ? 'bg-ivory/95 backdrop-blur-md shadow-lg'
+        ? 'bg-background/95 backdrop-blur-md shadow-elegant border-b border-border/50'
         : 'bg-transparent'
       }`}>
 
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <div className="font-playfair text-2xl md:text-3xl font-bold gradient-text">
+          <Link to="/" className="font-playfair text-2xl md:text-3xl font-bold gradient-text hover:scale-105 transition-transform duration-300">
             Cake N Cream
-          </div>
+          </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center">
             <NavigationMenu>
-              <NavigationMenuList className="flex items-center space-x-6">
+              <NavigationMenuList className="flex items-center space-x-1">
                 {navItems.map((item) => (
                   <NavigationMenuItem key={item.name}>
                     <Link
                       to={item.to}
-                      className="text-cocoa hover:text-rose-gold transition-colors duration-300 font-lato font-medium"
+                      className="px-4 py-2 rounded-lg text-foreground/80 hover:text-foreground hover:bg-accent/50 transition-all duration-300 font-lato font-medium"
                     >
                       {item.name}
                     </Link>
@@ -205,32 +205,35 @@ const FloatingNav = ({
                 {/* Dropdown Menu Items */}
                 {Object.entries(menuCategories).map(([key, category]) => (
                   <NavigationMenuItem key={key}>
-                    <NavigationMenuTrigger className="text-cocoa hover:text-rose-gold transition-colors duration-300 font-lato font-medium bg-transparent">
+                    <NavigationMenuTrigger className="px-4 py-2 rounded-lg text-foreground/80 hover:text-foreground hover:bg-accent/50 transition-all duration-300 font-lato font-medium bg-transparent border-none shadow-none data-[state=open]:bg-accent/50">
                       {category.title}
                     </NavigationMenuTrigger>
-                    <NavigationMenuContent className="bg-background/95 backdrop-blur-md border border-border shadow-lg">
+                    <NavigationMenuContent className="bg-background/98 backdrop-blur-md border border-border/50 shadow-elegant rounded-xl overflow-hidden">
                       <div className="w-96 p-6">
-                        <h3 className="font-playfair font-semibold text-lg text-cocoa mb-4">{category.title}</h3>
-                        <div className="space-y-3">
+                        <h3 className="font-playfair font-semibold text-xl text-foreground mb-4 pb-2 border-b border-border/30">
+                          {category.title}
+                        </h3>
+                        <div className="space-y-2">
                           {category.items.map((item) => (
                             <NavigationMenuLink key={item.name} asChild>
                               <Link
                                 to={item.to}
-                                className="block p-3 rounded-lg hover:bg-peach-light/50 transition-colors duration-200 group"
+                                className="block p-4 rounded-lg hover:bg-accent/30 transition-all duration-200 group border border-transparent hover:border-border/30"
                               >
-                                <div className="font-lato font-medium text-cocoa group-hover:text-rose-gold mb-1">
+                                <div className="font-lato font-semibold text-foreground group-hover:text-primary mb-1 text-sm">
                                   {item.name}
                                 </div>
-                                <div className="text-sm text-muted-foreground">
+                                <div className="text-xs text-muted-foreground group-hover:text-muted-foreground/80">
                                   {item.description}
                                 </div>
                               </Link>
                             </NavigationMenuLink>
                           ))}
                         </div>
-                        <div className="mt-4 pt-4 border-t border-border">
-                          <p className="text-xs text-muted-foreground">
-                            📞 Full quotes available via call, text, or email
+                        <div className="mt-6 pt-4 border-t border-border/30">
+                          <p className="text-xs text-muted-foreground flex items-center gap-2">
+                            <span className="text-primary">📞</span>
+                            Full quotes available via call, text, or email
                           </p>
                         </div>
                       </div>
@@ -242,19 +245,19 @@ const FloatingNav = ({
           </div>
 
           {/* Action Buttons */}
-          <div className="flex items-center space-x-4">
-            <Button variant="ghost" size="icon" className="hover:bg-peach-light">
+          <div className="flex items-center space-x-2">
+            <Button variant="ghost" size="icon" className="hover:bg-accent/50 rounded-lg transition-all duration-300">
               <Search className="w-5 h-5" />
             </Button>
             <Button
               variant="ghost"
               size="icon"
-              className="hover:bg-peach-light relative"
+              className="hover:bg-accent/50 rounded-lg transition-all duration-300 relative"
               onClick={handleWishlistClick}
             >
               <Heart className="w-5 h-5" />
               {wishlistItems.length > 0 && (
-                <span className="absolute -top-2 -right-2 bg-rose-gold text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">
                   {wishlistItems.length}
                 </span>
               )}
@@ -262,12 +265,12 @@ const FloatingNav = ({
             <Button
               variant="ghost"
               size="icon"
-              className="hover:bg-peach-light relative"
+              className="hover:bg-accent/50 rounded-lg transition-all duration-300 relative"
               onClick={handleCartClick}
             >
               <ShoppingCart className="w-5 h-5" />
               {cartItems.length > 0 && (
-                <span className="absolute -top-2 -right-2 bg-rose-gold text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">
                   {cartItems.length}
                 </span>
               )}
@@ -277,7 +280,7 @@ const FloatingNav = ({
             <Button
               variant="ghost"
               size="icon"
-              className="md:hidden hover:bg-peach-light"
+              className="md:hidden hover:bg-accent/50 rounded-lg transition-all duration-300"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
               {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -287,13 +290,13 @@ const FloatingNav = ({
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="md:hidden mt-4 pb-4 border-t border-border">
-            <div className="flex flex-col space-y-4 pt-4">
+          <div className="md:hidden mt-4 pb-6 border-t border-border/30 bg-background/50 backdrop-blur-sm rounded-b-xl">
+            <div className="flex flex-col space-y-1 pt-4">
               {navItems.map((item) => (
                 <Link
                   key={item.name}
                   to={item.to}
-                  className="text-cocoa hover:text-rose-gold transition-colors duration-300 font-lato font-medium"
+                  className="px-4 py-3 rounded-lg text-foreground/80 hover:text-foreground hover:bg-accent/50 transition-all duration-300 font-lato font-medium"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {item.name}
@@ -302,27 +305,28 @@ const FloatingNav = ({
               
               {/* Mobile Category Menus */}
               {Object.entries(menuCategories).map(([key, category]) => (
-                <div key={key} className="space-y-2">
-                  <div className="font-lato font-semibold text-cocoa text-lg">
+                <div key={key} className="space-y-2 mt-4">
+                  <div className="px-4 py-2 font-playfair font-semibold text-foreground text-lg border-b border-border/20">
                     {category.title}
                   </div>
                   {category.items.map((item) => (
                     <Link
                       key={item.name}
                       to={item.to}
-                      className="block pl-4 py-2 text-sm text-muted-foreground hover:text-rose-gold transition-colors duration-300"
+                      className="block mx-4 p-3 rounded-lg hover:bg-accent/30 transition-all duration-300 border border-transparent hover:border-border/30"
                       onClick={() => setIsMenuOpen(false)}
                     >
-                      <div className="font-medium">{item.name}</div>
-                      <div className="text-xs">{item.description}</div>
+                      <div className="font-lato font-medium text-foreground text-sm">{item.name}</div>
+                      <div className="text-xs text-muted-foreground mt-1">{item.description}</div>
                     </Link>
                   ))}
                 </div>
               ))}
               
-              <div className="pt-4 border-t border-border">
-                <p className="text-xs text-muted-foreground">
-                  📞 Full quotes available via call, text, or email
+              <div className="pt-4 mt-4 border-t border-border/30 mx-4">
+                <p className="text-xs text-muted-foreground flex items-center gap-2">
+                  <span className="text-primary">📞</span>
+                  Full quotes available via call, text, or email
                 </p>
               </div>
             </div>
