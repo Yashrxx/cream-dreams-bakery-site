@@ -1,4 +1,3 @@
-// models/productSchema.js
 import mongoose from 'mongoose';
 
 const ProductSchema = new mongoose.Schema({
@@ -10,7 +9,7 @@ const ProductSchema = new mongoose.Schema({
   description: String,
   isNew: Boolean,
   isPopular: Boolean,
-  imageKey: String, // This matches with Supabase image name
+  imageKey: String,
 });
 
 export default mongoose.models.Product || mongoose.model('Product', ProductSchema);

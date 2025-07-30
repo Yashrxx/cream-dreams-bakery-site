@@ -1,9 +1,9 @@
-const connectToMongo = require("./db");
-connectToMongo();
+import express from 'express';
+import cors from 'cors';
+import connectToMongo from './db.js';
+import productsRoute from './routes/products.js';
 
-const express = require('express');
-const cors = require('cors');
-const productsRoute = require('./routes/products'); // <-- Use require
+connectToMongo();
 
 const app = express();
 const port = process.env.PORT || 5001;
@@ -28,7 +28,6 @@ app.use(
 );
 
 app.use(express.json());
-
 app.use('/api/products', productsRoute);
 
 app.listen(port, () => {
