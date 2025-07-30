@@ -143,9 +143,9 @@ const FloatingNav = ({
       title: 'Cakes',
       items: [
         { name: 'Flavours / Sizing / Pricing', description: 'Starting from $25 - Full quote available on request', to: '/products?category=flavours' },
-        { name: 'Custom Cakes', description: 'Bespoke designs starting from $50', to: '/products?category=custom' },
+        { name: 'Custom Cakes', description: 'Bespoke designs starting from $50', to: '/products?category=custom-cakes' },
         { name: 'Tea Cakes', description: 'Perfect for afternoon tea starting from $15', to: '/products?category=tea-cakes' },
-        { name: 'Wedding Cakes', description: 'Elegant celebration cakes starting from $200', to: '/products?category=wedding' },
+        { name: 'Wedding Cakes', description: 'Elegant celebration cakes starting from $200', to: '/products?category=wedding-cakes' },
       ]
     },
     weddings: {
