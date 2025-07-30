@@ -134,7 +134,7 @@ const FloatingNav = ({
 
   const navItems = [
     { name: 'Home', to: '/' },
-    { name: 'About', to: '/about' },
+    // { name: 'About', to: '/about' },
     { name: 'Contact', to: '/contact' },
   ];
 
@@ -164,7 +164,7 @@ const FloatingNav = ({
       ]
     },
     desserts: {
-      title: 'Desserts / Sweet Treats',
+      title: 'Desserts',
       items: [
         { name: 'Brownies', description: 'Rich chocolate brownies starting from $3 each', to: '/products?category=brownies' },
         { name: 'Macarons', description: 'French macarons starting from $2.50 each', to: '/products?category=macarons' },
