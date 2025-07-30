@@ -7,7 +7,7 @@ const ProductSchema = new mongoose.Schema({
   rating: Number,
   reviews: Number,
   description: String,
-  isNew: Boolean,
+  newArrival: Boolean,
   isPopular: Boolean,
   imageKey: String,
 });
