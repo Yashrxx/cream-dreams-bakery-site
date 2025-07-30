@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import connectToMongo from './db.js';
-import productsRoute from './routes/productRoutes.js';
+import productsRoute from '../routes/productRoutes.js';
 
 connectToMongo();
 
