@@ -1,10 +1,18 @@
 import { useState, useEffect } from 'react';
-import { ShoppingCart, Menu, X, Heart, Search } from 'lucide-react';
+import { ShoppingCart, Menu, X, Heart, Search, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import CartSidebar from './CartSidebar';
 import WishlistSidebar from './WishlistSidebar';
 import { useToast } from '@/hooks/use-toast';
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from "@/components/ui/navigation-menu"
 
 interface CartItem {
   id: string;
@@ -126,10 +134,45 @@ const FloatingNav = ({
 
   const navItems = [
     { name: 'Home', to: '/' },
-    { name: 'Cakes', to: '/products' },
     { name: 'About', to: '/about' },
     { name: 'Contact', to: '/contact' },
   ];
+
+  const menuCategories = {
+    cakes: {
+      title: 'Cakes',
+      items: [
+        { name: 'Flavours / Sizing / Pricing', description: 'Starting from $25 - Full quote available on request', to: '/products?category=flavours' },
+        { name: 'Custom Cakes', description: 'Bespoke designs starting from $50', to: '/products?category=custom' },
+        { name: 'Tea Cakes', description: 'Perfect for afternoon tea starting from $15', to: '/products?category=tea-cakes' },
+        { name: 'Wedding Cakes', description: 'Elegant celebration cakes starting from $200', to: '/products?category=wedding' },
+      ]
+    },
+    weddings: {
+      title: 'Weddings',
+      items: [
+        { name: 'Two-Tier Cakes', description: 'Sizes: 6"& 4", 7"& 5", 8"& 6" - Starting from $150', to: '/products?category=two-tier' },
+        { name: 'Three-Tier Cakes', description: 'Sizes: 8",6",4" and 9",7",5" - Starting from $250', to: '/products?category=three-tier' },
+        { name: 'Wedding Favors', description: 'Personalized treats starting from $3 each', to: '/products?category=wedding-favors' },
+      ]
+    },
+    cupcakes: {
+      title: 'Cupcakes',
+      items: [
+        { name: 'Pack of 6, 8, or 12', description: 'Minimum order of 6 - Starting from $24', to: '/products?category=cupcake-packs' },
+        { name: 'Mini Cupcakes', description: 'Minimum order of 12 - Starting from $30', to: '/products?category=mini-cupcakes' },
+      ]
+    },
+    desserts: {
+      title: 'Desserts / Sweet Treats',
+      items: [
+        { name: 'Brownies', description: 'Rich chocolate brownies starting from $3 each', to: '/products?category=brownies' },
+        { name: 'Macarons', description: 'French macarons starting from $2.50 each', to: '/products?category=macarons' },
+        { name: 'Eclairs', description: 'Cream-filled eclairs starting from $4 each', to: '/products?category=eclairs' },
+        { name: 'Cake Jars', description: 'Individual layered desserts starting from $8', to: '/products?category=cake-jars' },
+      ]
+    }
+  };
 
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled || isMenuOpen
@@ -146,15 +189,56 @@ const FloatingNav = ({
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            {navItems.map((item) => (
-              <Link
-                key={item.name}
-                to={item.to}
-                className="text-cocoa hover:text-rose-gold transition-colors duration-300 font-lato font-medium"
-              >
-                {item.name}
-              </Link>
-            ))}
+            <NavigationMenu>
+              <NavigationMenuList className="flex items-center space-x-6">
+                {navItems.map((item) => (
+                  <NavigationMenuItem key={item.name}>
+                    <Link
+                      to={item.to}
+                      className="text-cocoa hover:text-rose-gold transition-colors duration-300 font-lato font-medium"
+                    >
+                      {item.name}
+                    </Link>
+                  </NavigationMenuItem>
+                ))}
+                
+                {/* Dropdown Menu Items */}
+                {Object.entries(menuCategories).map(([key, category]) => (
+                  <NavigationMenuItem key={key}>
+                    <NavigationMenuTrigger className="text-cocoa hover:text-rose-gold transition-colors duration-300 font-lato font-medium bg-transparent">
+                      {category.title}
+                    </NavigationMenuTrigger>
+                    <NavigationMenuContent className="bg-background/95 backdrop-blur-md border border-border shadow-lg">
+                      <div className="w-96 p-6">
+                        <h3 className="font-playfair font-semibold text-lg text-cocoa mb-4">{category.title}</h3>
+                        <div className="space-y-3">
+                          {category.items.map((item) => (
+                            <NavigationMenuLink key={item.name} asChild>
+                              <Link
+                                to={item.to}
+                                className="block p-3 rounded-lg hover:bg-peach-light/50 transition-colors duration-200 group"
+                              >
+                                <div className="font-lato font-medium text-cocoa group-hover:text-rose-gold mb-1">
+                                  {item.name}
+                                </div>
+                                <div className="text-sm text-muted-foreground">
+                                  {item.description}
+                                </div>
+                              </Link>
+                            </NavigationMenuLink>
+                          ))}
+                        </div>
+                        <div className="mt-4 pt-4 border-t border-border">
+                          <p className="text-xs text-muted-foreground">
+                            📞 Full quotes available via call, text, or email
+                          </p>
+                        </div>
+                      </div>
+                    </NavigationMenuContent>
+                  </NavigationMenuItem>
+                ))}
+              </NavigationMenuList>
+            </NavigationMenu>
           </div>
 
           {/* Action Buttons */}
@@ -215,6 +299,32 @@ const FloatingNav = ({
                   {item.name}
                 </Link>
               ))}
+              
+              {/* Mobile Category Menus */}
+              {Object.entries(menuCategories).map(([key, category]) => (
+                <div key={key} className="space-y-2">
+                  <div className="font-lato font-semibold text-cocoa text-lg">
+                    {category.title}
+                  </div>
+                  {category.items.map((item) => (
+                    <Link
+                      key={item.name}
+                      to={item.to}
+                      className="block pl-4 py-2 text-sm text-muted-foreground hover:text-rose-gold transition-colors duration-300"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      <div className="font-medium">{item.name}</div>
+                      <div className="text-xs">{item.description}</div>
+                    </Link>
+                  ))}
+                </div>
+              ))}
+              
+              <div className="pt-4 border-t border-border">
+                <p className="text-xs text-muted-foreground">
+                  📞 Full quotes available via call, text, or email
+                </p>
+              </div>
             </div>
           </div>
         )}
