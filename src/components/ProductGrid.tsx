@@ -49,7 +49,8 @@ const ProductGrid = ({ onAddToCart }: { onAddToCart?: (item: any) => void }) => 
 
   const products = defaultProducts.map((product) => {
 
-    const imageObj = productImages.find((img) => img.path === product.imageKey);
+    const imagePath = `${product.category}/${product.imageKey}`;
+    const imageObj = productImages.find((img) => img.path === imagePath);
     const imageFromSupabase = imageObj?.url;
     const imageFromURL = product.imageURL;
     console.log("Product Name:", product.name);
@@ -88,8 +89,8 @@ const ProductGrid = ({ onAddToCart }: { onAddToCart?: (item: any) => void }) => 
               key={category.id}
               variant={activeCategory === category.id ? "default" : "outline"}
               className={`font-lato font-medium px-6 py-2 rounded-full transition-all duration-300 ${activeCategory === category.id
-                  ? "btn-primary"
-                  : "border-rose-gold text-rose-gold hover:bg-rose-gold hover:text-white"
+                ? "btn-primary"
+                : "border-rose-gold text-rose-gold hover:bg-rose-gold hover:text-white"
                 }`}
               onClick={() => setActiveCategory(category.id)}
             >
