@@ -46,7 +46,7 @@ const ProductGrid = ({ onAddToCart }: { onAddToCart?: (item: any) => void }) => 
 
   return {
     ...product,
-    image: imageFromURL || imageFromSupabase || productShowcase,
+    image: imageFromSupabase || imageFromURL || productShowcase,
   };
 });
 

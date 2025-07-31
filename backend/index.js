@@ -17,10 +17,13 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
+      if (!origin) return callback(null, true); // Allow non-browser requests
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
       } else {
-        callback(new Error("Not allowed by CORS"));
+        console.error("Blocked by CORS:", origin); // For debugging
+        return callback(new Error("Not allowed by CORS"));
       }
     },
     credentials: true,
