@@ -43,7 +43,7 @@ const ProductGrid = ({ onAddToCart }: { onAddToCart?: (item: any) => void }) => 
   const categories = [
     { id: "all", name: "All" },
     { id: "birthday", name: "Birthday Cakes" },
-    { id: "wedding", name: "Wedding Cakes" },
+    { id: "weddings", name: "Wedding Cakes" },
     { id: "custom", name: "Custom Cakes" },
     { id: "cupcakes", name: "Cupcakes" },
     { id: "desserts", name: "Desserts / Treats" },

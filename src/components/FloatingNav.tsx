@@ -148,30 +148,30 @@ const FloatingNav = ({
         { name: 'Wedding Cakes', description: 'Elegant celebration cakes starting from $200', to: '/products?category=wedding-cakes' },
       ]
     },
-    weddings: {
-      title: 'Weddings',
-      items: [
-        { name: 'Two-Tier Cakes', description: 'Sizes: 6"& 4", 7"& 5", 8"& 6" - Starting from $150', to: '/products?category=two-tier' },
-        { name: 'Three-Tier Cakes', description: 'Sizes: 8",6",4" and 9",7",5" - Starting from $250', to: '/products?category=three-tier' },
-        { name: 'Wedding Favors', description: 'Personalized treats starting from $3 each', to: '/products?category=wedding-favors' },
-      ]
-    },
-    cupcakes: {
-      title: 'Cupcakes',
-      items: [
-        { name: 'Pack of 6, 8, or 12', description: 'Minimum order of 6 - Starting from $24', to: '/products?category=cupcake-packs' },
-        { name: 'Mini Cupcakes', description: 'Minimum order of 12 - Starting from $30', to: '/products?category=mini-cupcakes' },
-      ]
-    },
-    desserts: {
-      title: 'Desserts',
-      items: [
-        { name: 'Brownies', description: 'Rich chocolate brownies starting from $3 each', to: '/products?category=brownies' },
-        { name: 'Macarons', description: 'French macarons starting from $2.50 each', to: '/products?category=macarons' },
-        { name: 'Eclairs', description: 'Cream-filled eclairs starting from $4 each', to: '/products?category=eclairs' },
-        { name: 'Cake Jars', description: 'Individual layered desserts starting from $8', to: '/products?category=cake-jars' },
-      ]
-    }
+    // weddings: {
+    //   title: 'Weddings',
+    //   items: [
+    //     { name: 'Two-Tier Cakes', description: 'Sizes: 6"& 4", 7"& 5", 8"& 6" - Starting from $150', to: '/products?category=two-tier' },
+    //     { name: 'Three-Tier Cakes', description: 'Sizes: 8",6",4" and 9",7",5" - Starting from $250', to: '/products?category=three-tier' },
+    //     { name: 'Wedding Favors', description: 'Personalized treats starting from $3 each', to: '/products?category=wedding-favors' },
+    //   ]
+    // },
+    // cupcakes: {
+    //   title: 'Cupcakes',
+    //   items: [
+    //     { name: 'Pack of 6, 8, or 12', description: 'Minimum order of 6 - Starting from $24', to: '/products?category=cupcake-packs' },
+    //     { name: 'Mini Cupcakes', description: 'Minimum order of 12 - Starting from $30', to: '/products?category=mini-cupcakes' },
+    //   ]
+    // },
+    // desserts: {
+    //   title: 'Desserts',
+    //   items: [
+    //     { name: 'Brownies', description: 'Rich chocolate brownies starting from $3 each', to: '/products?category=brownies' },
+    //     { name: 'Macarons', description: 'French macarons starting from $2.50 each', to: '/products?category=macarons' },
+    //     { name: 'Eclairs', description: 'Cream-filled eclairs starting from $4 each', to: '/products?category=eclairs' },
+    //     { name: 'Cake Jars', description: 'Individual layered desserts starting from $8', to: '/products?category=cake-jars' },
+    //   ]
+    // }
   };
 
   return (
