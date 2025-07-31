@@ -24,7 +24,7 @@ const ProductGrid = ({ onAddToCart }: { onAddToCart?: (item: any) => void }) => 
 
   // ✅ Proper usage of hooks (NO loops)
   const birthday = useImageManager("product-images", "birthday");
-  const wedding = useImageManager("product-images", "wedding");
+  const wedding = useImageManager("product-images", "weddings");
   const custom = useImageManager("product-images", "custom");
   const cupcakes = useImageManager("product-images", "cupcakes");
   const desserts = useImageManager("product-images", "desserts");
