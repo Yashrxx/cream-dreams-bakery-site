@@ -16,7 +16,7 @@ const LoadingSpinner = () => (
 
 const ProductGrid = ({ onAddToCart }: { onAddToCart?: (item: any) => void }) => {
   const { toast } = useToast();
-  const { images: productImages, loading: loadingImages } = useImageManager("products");
+  const { images: productImages, loading: loadingImages } = useImageManager("product-images");
   const [defaultProducts, setDefaultProducts] = useState<any[]>([]);
   const [loadingProducts, setLoadingProducts] = useState(true);
   const [activeCategory, setActiveCategory] = useState("all");
