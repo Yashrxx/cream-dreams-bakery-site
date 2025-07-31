@@ -17,42 +17,58 @@ export const useImageManager = (bucketName: string, folder?: string) => {
     try {
       setLoading(true);
       setError(null);
+      let allImages: ImageData[] = [];
 
-      const { data: files, error: listError } = await supabase.storage
-        .from(bucketName)
-        .list(folder || '', {
-          limit: 100,
-          offset: 0,
-        });
-
-      if (listError) {
-        throw listError;
-      }
-
-      if (!files || files.length === 0) {
-        setImages([]);
-        return;
-      }
-
-      const imageFiles = files.filter(file => 
-        file.name.match(/\.(jpg|jpeg|png|gif|webp)$/i)
-      );
-
-      const imagePromises = imageFiles.map(async (file) => {
-        const { data } = supabase.storage
+      const fetchFromFolder = async (folderName: string) => {
+        const { data: files, error: listError } = await supabase.storage
           .from(bucketName)
-          .getPublicUrl(folder ? `${folder}/${file.name}` : file.name);
+          .list(folderName, {
+            limit: 100,
+            offset: 0,
+          });
 
-        return {
-          id: file.id || file.name,
-          url: data.publicUrl,
-          name: file.name,
-          category: folder
-        };
-      });
+        if (listError) throw listError;
 
-      const imageData = await Promise.all(imagePromises);
-      setImages(imageData);
+        const imageFiles = files?.filter(file =>
+          file.name.match(/\.(jpg|jpeg|png|gif|webp)$/i)
+        ) || [];
+
+        const imageData = await Promise.all(
+          imageFiles.map(async (file) => {
+            const { data } = supabase.storage
+              .from(bucketName)
+              .getPublicUrl(`${folderName}/${file.name}`);
+
+            return {
+              id: file.id || file.name,
+              url: data.publicUrl,
+              name: file.name,
+              category: folderName,
+            };
+          })
+        );
+
+        allImages.push(...imageData);
+      };
+
+      if (folder) {
+        await fetchFromFolder(folder);
+      } else {
+        // Fetch all top-level folders in the bucket
+        const { data: folders, error: foldersError } = await supabase.storage
+          .from(bucketName)
+          .list('', { limit: 100, offset: 0 });
+
+        if (foldersError) throw foldersError;
+
+        const folderDirs = folders?.filter((item) => item.name && item.metadata?.['mimetype'] === undefined) || [];
+
+        for (const dir of folderDirs) {
+          await fetchFromFolder(dir.name);
+        }
+      }
+
+      setImages(allImages);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch images');
       setImages([]);
@@ -68,15 +84,10 @@ export const useImageManager = (bucketName: string, folder?: string) => {
 
       const { error: uploadError } = await supabase.storage
         .from(bucketName)
-        .upload(filePath, file, {
-          upsert: true
-        });
+        .upload(filePath, file, { upsert: true });
 
-      if (uploadError) {
-        throw uploadError;
-      }
+      if (uploadError) throw uploadError;
 
-      // Refresh images list
       await fetchImages();
       return true;
     } catch (err) {
@@ -88,14 +99,12 @@ export const useImageManager = (bucketName: string, folder?: string) => {
   const deleteImage = async (imageName: string) => {
     try {
       const filePath = folder ? `${folder}/${imageName}` : imageName;
-      
+
       const { error: deleteError } = await supabase.storage
         .from(bucketName)
         .remove([filePath]);
 
-      if (deleteError) {
-        throw deleteError;
-      }
+      if (deleteError) throw deleteError;
 
       await fetchImages();
       return true;
@@ -120,9 +129,6 @@ export const useImageManager = (bucketName: string, folder?: string) => {
 };
 
 export const getImageUrl = (bucketName: string, imagePath: string) => {
-  const { data } = supabase.storage
-    .from(bucketName)
-    .getPublicUrl(imagePath);
-  
+  const { data } = supabase.storage.from(bucketName).getPublicUrl(imagePath);
   return data.publicUrl;
 };

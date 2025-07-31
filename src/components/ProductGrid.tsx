@@ -16,11 +16,21 @@ const LoadingSpinner = () => (
 
 const ProductGrid = ({ onAddToCart }: { onAddToCart?: (item: any) => void }) => {
   const { toast } = useToast();
-  const { images: productImages, loading: loadingImages } = useImageManager("product-images");
   const [defaultProducts, setDefaultProducts] = useState<any[]>([]);
+  const [productImages, setProductImages] = useState<any[]>([]);
   const [loadingProducts, setLoadingProducts] = useState(true);
+  const [loadingImages, setLoadingImages] = useState(true);
   const [activeCategory, setActiveCategory] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
+
+  const categories = [
+    { id: "all", name: "All" },
+    { id: "birthday", name: "Birthday Cakes" },
+    { id: "wedding", name: "Wedding Cakes" },
+    { id: "custom", name: "Custom Cakes" },
+    { id: "cupcakes", name: "Cupcakes" },
+    { id: "desserts", name: "Desserts / Treats" },
+  ];
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -35,27 +45,41 @@ const ProductGrid = ({ onAddToCart }: { onAddToCart?: (item: any) => void }) => 
         setLoadingProducts(false);
       }
     };
+
+    const fetchImagesFromAllFolders = async () => {
+      setLoadingImages(true);
+      const allImages: any[] = [];
+
+      const folderList = ["birthday", "wedding", "custom", "cupcakes", "desserts"];
+      for (const folder of folderList) {
+        const { images } = useImageManager("product-images", folder);
+        // wait one tick for hook execution
+        const resolved = await new Promise<any[]>(resolve => {
+          const interval = setInterval(() => {
+            if (images.length > 0) {
+              clearInterval(interval);
+              resolve(images);
+            }
+          }, 100);
+        });
+        allImages.push(...resolved);
+      }
+
+      setProductImages(allImages);
+      setLoadingImages(false);
+    };
+
     fetchProducts();
+    fetchImagesFromAllFolders();
   }, []);
 
-  const categories = [
-    { id: "all", name: "All" },
-    { id: "birthday", name: "Birthday Cakes" },
-    { id: "wedding", name: "Wedding Cakes" },
-    { id: "custom", name: "Custom Cakes" },
-    { id: "cupcakes", name: "Cupcakes" },
-    { id: "desserts", name: "Desserts / Treats" },
-  ];
-
   const products = defaultProducts.map((product) => {
-
     const imagePath = `${product.category}/${product.imageKey}`;
-    const imageObj = productImages.find((img) => img.path === imagePath);
+    const imageObj = productImages.find(
+      (img) => `${img.category}/${img.name}` === imagePath
+    );
     const imageFromSupabase = imageObj?.url;
     const imageFromURL = product.imageURL;
-    console.log("Product Name:", product.name);
-    console.log("Product imageKey:", product.imageKey);
-    console.log("Available Supabase image paths:", productImages.map(img => img.path));
 
     return {
       ...product,
@@ -88,10 +112,11 @@ const ProductGrid = ({ onAddToCart }: { onAddToCart?: (item: any) => void }) => 
             <Button
               key={category.id}
               variant={activeCategory === category.id ? "default" : "outline"}
-              className={`font-lato font-medium px-6 py-2 rounded-full transition-all duration-300 ${activeCategory === category.id
-                ? "btn-primary"
-                : "border-rose-gold text-rose-gold hover:bg-rose-gold hover:text-white"
-                }`}
+              className={`font-lato font-medium px-6 py-2 rounded-full transition-all duration-300 ${
+                activeCategory === category.id
+                  ? "btn-primary"
+                  : "border-rose-gold text-rose-gold hover:bg-rose-gold hover:text-white"
+              }`}
               onClick={() => setActiveCategory(category.id)}
             >
               {category.name}
@@ -104,7 +129,10 @@ const ProductGrid = ({ onAddToCart }: { onAddToCart?: (item: any) => void }) => 
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredProducts.map((product) => (
-              <Card key={product._id} className="group card-hover bg-white/80 backdrop-blur-sm border-0 rounded-2xl overflow-hidden">
+              <Card
+                key={product._id}
+                className="group card-hover bg-white/80 backdrop-blur-sm border-0 rounded-2xl overflow-hidden"
+              >
                 <div className="relative">
                   <ImageWithFallback
                     src={product.image}
@@ -115,10 +143,14 @@ const ProductGrid = ({ onAddToCart }: { onAddToCart?: (item: any) => void }) => 
 
                   <div className="absolute top-4 left-4 space-y-2">
                     {product.isNew && (
-                      <span className="bg-rose-gold text-white px-3 py-1 rounded-full text-sm font-lato font-medium">New</span>
+                      <span className="bg-rose-gold text-white px-3 py-1 rounded-full text-sm font-lato font-medium">
+                        New
+                      </span>
                     )}
                     {product.isPopular && (
-                      <span className="bg-peach text-cocoa px-3 py-1 rounded-full text-sm font-lato font-medium">Popular</span>
+                      <span className="bg-peach text-cocoa px-3 py-1 rounded-full text-sm font-lato font-medium">
+                        Popular
+                      </span>
                     )}
                   </div>
 
@@ -147,8 +179,9 @@ const ProductGrid = ({ onAddToCart }: { onAddToCart?: (item: any) => void }) => 
                           {[...Array(5)].map((_, i) => (
                             <Star
                               key={i}
-                              className={`w-4 h-4 ${i < Math.floor(product.rating) ? "text-yellow-400 fill-current" : "text-gray-300"
-                                }`}
+                              className={`w-4 h-4 ${
+                                i < Math.floor(product.rating) ? "text-yellow-400 fill-current" : "text-gray-300"
+                              }`}
                             />
                           ))}
                         </div>
@@ -160,9 +193,13 @@ const ProductGrid = ({ onAddToCart }: { onAddToCart?: (item: any) => void }) => 
 
                     <div className="flex items-center justify-between">
                       <div className="space-x-2">
-                        <span className="font-playfair text-lg font-bold text-rose-gold">Starting from ${product.price}</span>
+                        <span className="font-playfair text-lg font-bold text-rose-gold">
+                          Starting from ${product.price}
+                        </span>
                         {product.originalPrice && (
-                          <span className="text-gray-400 line-through font-lato">${product.originalPrice}</span>
+                          <span className="text-gray-400 line-through font-lato">
+                            ${product.originalPrice}
+                          </span>
                         )}
                       </div>
 
@@ -194,7 +231,10 @@ const ProductGrid = ({ onAddToCart }: { onAddToCart?: (item: any) => void }) => 
         )}
 
         <div className="text-center mt-12">
-          <Button variant="outline" className="border-rose-gold text-rose-gold hover:bg-rose-gold hover:text-white font-lato font-semibold px-8 py-3">
+          <Button
+            variant="outline"
+            className="border-rose-gold text-rose-gold hover:bg-rose-gold hover:text-white font-lato font-semibold px-8 py-3"
+          >
             Load More Cakes
           </Button>
         </div>
