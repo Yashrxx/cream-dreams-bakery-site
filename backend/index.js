@@ -18,12 +18,10 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: function (origin, callback) {
-      if (!origin) return callback(null, true); // Allow non-browser requests
-
-      if (allowedOrigins.includes(origin)) {
+      if (!origin || allowedOrigins.includes(origin)) {
         return callback(null, true);
       } else {
-        console.error("Blocked by CORS:", origin); // For debugging
+        console.error("Blocked by CORS:", origin);
         return callback(new Error("Not allowed by CORS"));
       }
     },
@@ -33,6 +31,14 @@ app.use(
 
 app.use(express.json());
 app.use('/api/products', productsRoute);
+
+app.get('/health', (req, res) => {
+  res.status(200).send('OK');
+});
+
+app.get('/', (req, res) => {
+  res.send('Welcome to Cream Dreams Bakery API!');
+});
 
 app.listen(port, () => {
   console.log(`Cake N Cream backend listening at http://localhost:${port}`);
