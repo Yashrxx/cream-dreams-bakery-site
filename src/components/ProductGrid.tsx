@@ -16,12 +16,29 @@ const LoadingSpinner = () => (
 
 const ProductGrid = ({ onAddToCart }: { onAddToCart?: (item: any) => void }) => {
   const { toast } = useToast();
+
   const [defaultProducts, setDefaultProducts] = useState<any[]>([]);
-  const [productImages, setProductImages] = useState<any[]>([]);
   const [loadingProducts, setLoadingProducts] = useState(true);
-  const [loadingImages, setLoadingImages] = useState(true);
   const [activeCategory, setActiveCategory] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
+
+  // ✅ Proper usage of hooks (NO loops)
+  const birthday = useImageManager("product-images", "birthday");
+  const wedding = useImageManager("product-images", "wedding");
+  const custom = useImageManager("product-images", "custom");
+  const cupcakes = useImageManager("product-images", "cupcakes");
+  const desserts = useImageManager("product-images", "desserts");
+
+  const productImages = [
+    ...birthday.images,
+    ...wedding.images,
+    ...custom.images,
+    ...cupcakes.images,
+    ...desserts.images,
+  ];
+
+  const loadingImages =
+    birthday.loading || wedding.loading || custom.loading || cupcakes.loading || desserts.loading;
 
   const categories = [
     { id: "all", name: "All" },
@@ -46,31 +63,7 @@ const ProductGrid = ({ onAddToCart }: { onAddToCart?: (item: any) => void }) => 
       }
     };
 
-    const fetchImagesFromAllFolders = async () => {
-      setLoadingImages(true);
-      const allImages: any[] = [];
-
-      const folderList = ["birthday", "wedding", "custom", "cupcakes", "desserts"];
-      for (const folder of folderList) {
-        const { images } = useImageManager("product-images", folder);
-        // wait one tick for hook execution
-        const resolved = await new Promise<any[]>(resolve => {
-          const interval = setInterval(() => {
-            if (images.length > 0) {
-              clearInterval(interval);
-              resolve(images);
-            }
-          }, 100);
-        });
-        allImages.push(...resolved);
-      }
-
-      setProductImages(allImages);
-      setLoadingImages(false);
-    };
-
     fetchProducts();
-    fetchImagesFromAllFolders();
   }, []);
 
   const products = defaultProducts.map((product) => {
