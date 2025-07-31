@@ -1,6 +1,7 @@
 import { Users, Award, Heart, Clock, Cake, Star, ChefHat } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import bakeryInterior from '@/assets/bakery-interior.jpg';
+import { Link } from 'react-router-dom';
 
 const About = () => {
   const values = [
@@ -65,12 +66,12 @@ const About = () => {
                 Our Sweet Story
               </h1>
               <p className="text-lg text-cocoa-light font-lato leading-relaxed mb-8">
-                Welcome to Cake N Cream, where every slice tells a story of passion, tradition, and uncompromising quality. 
-                Since 2004, we've been the heart of sweet celebrations in our community, creating not just cakes, but cherished memories 
+                Welcome to Cake N Cream, where every slice tells a story of passion, tradition, and uncompromising quality.
+                Since 2004, we've been the heart of sweet celebrations in our community, creating not just cakes, but cherished memories
                 that last a lifetime.
               </p>
               <p className="text-lg text-cocoa-light font-lato leading-relaxed">
-                From intimate birthday celebrations to grand wedding festivities, we believe that every moment deserves to be 
+                From intimate birthday celebrations to grand wedding festivities, we believe that every moment deserves to be
                 sweetened with something truly special. Our commitment to excellence and personal touch makes each creation unique.
               </p>
             </div>
@@ -207,22 +208,22 @@ const About = () => {
             Ready to Create Sweet Memories?
           </h2>
           <p className="text-xl text-cocoa-light max-w-2xl mx-auto font-lato mb-8">
-            Let us be part of your special moments. From custom cakes to everyday treats, 
+            Let us be part of your special moments. From custom cakes to everyday treats,
             we're here to make your celebrations unforgettable.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a
-              href="/contact"
+            <Link
+              to="/contact"
               className="btn-primary px-8 py-4 rounded-lg font-lato font-semibold text-lg inline-flex items-center justify-center hover-scale"
             >
               Order Your Custom Cake
-            </a>
-            <a
-              href="/products"
+            </Link>
+            <Link
+              to="/products"
               className="btn-secondary px-8 py-4 rounded-lg font-lato font-semibold text-lg inline-flex items-center justify-center hover-scale"
             >
               Browse Our Collection
-            </a>
+            </Link>
           </div>
         </div>
       </div>
