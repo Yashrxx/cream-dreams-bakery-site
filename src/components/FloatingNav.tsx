@@ -136,43 +136,44 @@ const FloatingNav = ({
     { name: 'Home', to: '/' },
     { name: 'About', to: '/about' },
     { name: 'Contact', to: '/contact' },
+    { name: 'Cakes', to: '/products' }
   ];
 
-  const menuCategories = {
-    cakes: {
-      title: 'Cakes',
-      items: [
-        { name: 'Flavours / Sizing / Pricing', description: 'Starting from $25 - Full quote available on request', to: '/products?category=flavours' },
-        { name: 'Custom Cakes', description: 'Bespoke designs starting from $50', to: '/products?category=custom-cakes' },
-        { name: 'Tea Cakes', description: 'Perfect for afternoon tea starting from $15', to: '/products?category=tea-cakes' },
-        { name: 'Wedding Cakes', description: 'Elegant celebration cakes starting from $200', to: '/products?category=wedding-cakes' },
-      ]
-    },
-    // weddings: {
-    //   title: 'Weddings',
-    //   items: [
-    //     { name: 'Two-Tier Cakes', description: 'Sizes: 6"& 4", 7"& 5", 8"& 6" - Starting from $150', to: '/products?category=two-tier' },
-    //     { name: 'Three-Tier Cakes', description: 'Sizes: 8",6",4" and 9",7",5" - Starting from $250', to: '/products?category=three-tier' },
-    //     { name: 'Wedding Favors', description: 'Personalized treats starting from $3 each', to: '/products?category=wedding-favors' },
-    //   ]
-    // },
-    // cupcakes: {
-    //   title: 'Cupcakes',
-    //   items: [
-    //     { name: 'Pack of 6, 8, or 12', description: 'Minimum order of 6 - Starting from $24', to: '/products?category=cupcake-packs' },
-    //     { name: 'Mini Cupcakes', description: 'Minimum order of 12 - Starting from $30', to: '/products?category=mini-cupcakes' },
-    //   ]
-    // },
-    // desserts: {
-    //   title: 'Desserts',
-    //   items: [
-    //     { name: 'Brownies', description: 'Rich chocolate brownies starting from $3 each', to: '/products?category=brownies' },
-    //     { name: 'Macarons', description: 'French macarons starting from $2.50 each', to: '/products?category=macarons' },
-    //     { name: 'Eclairs', description: 'Cream-filled eclairs starting from $4 each', to: '/products?category=eclairs' },
-    //     { name: 'Cake Jars', description: 'Individual layered desserts starting from $8', to: '/products?category=cake-jars' },
-    //   ]
-    // }
-  };
+  // const menuCategories = {
+  //   cakes: {
+  //     title: 'Cakes',
+  //     items: [
+  //       { name: 'Flavours / Sizing / Pricing', description: 'Starting from $25 - Full quote available on request', to: '/products?category=flavours' },
+  //       { name: 'Custom Cakes', description: 'Bespoke designs starting from $50', to: '/products?category=custom-cakes' },
+  //       { name: 'Tea Cakes', description: 'Perfect for afternoon tea starting from $15', to: '/products?category=tea-cakes' },
+  //       { name: 'Wedding Cakes', description: 'Elegant celebration cakes starting from $200', to: '/products?category=wedding-cakes' },
+  //     ]
+  //   },
+  //   weddings: {
+  //     title: 'Weddings',
+  //     items: [
+  //       { name: 'Two-Tier Cakes', description: 'Sizes: 6"& 4", 7"& 5", 8"& 6" - Starting from $150', to: '/products?category=two-tier' },
+  //       { name: 'Three-Tier Cakes', description: 'Sizes: 8",6",4" and 9",7",5" - Starting from $250', to: '/products?category=three-tier' },
+  //       { name: 'Wedding Favors', description: 'Personalized treats starting from $3 each', to: '/products?category=wedding-favors' },
+  //     ]
+  //   },
+  //   cupcakes: {
+  //     title: 'Cupcakes',
+  //     items: [
+  //       { name: 'Pack of 6, 8, or 12', description: 'Minimum order of 6 - Starting from $24', to: '/products?category=cupcake-packs' },
+  //       { name: 'Mini Cupcakes', description: 'Minimum order of 12 - Starting from $30', to: '/products?category=mini-cupcakes' },
+  //     ]
+  //   },
+  //   desserts: {
+  //     title: 'Desserts',
+  //     items: [
+  //       { name: 'Brownies', description: 'Rich chocolate brownies starting from $3 each', to: '/products?category=brownies' },
+  //       { name: 'Macarons', description: 'French macarons starting from $2.50 each', to: '/products?category=macarons' },
+  //       { name: 'Eclairs', description: 'Cream-filled eclairs starting from $4 each', to: '/products?category=eclairs' },
+  //       { name: 'Cake Jars', description: 'Individual layered desserts starting from $8', to: '/products?category=cake-jars' },
+  //     ]
+  //   }
+  // };
 
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled || isMenuOpen
@@ -203,7 +204,7 @@ const FloatingNav = ({
                 ))}
                 
                 {/* Dropdown Menu Items */}
-                {Object.entries(menuCategories).map(([key, category]) => (
+                {/* {Object.entries(menuCategories).map(([key, category]) => (
                   <NavigationMenuItem key={key}>
                     <NavigationMenuTrigger className="px-4 py-2 rounded-lg text-foreground/80 hover:text-foreground hover:bg-accent/50 transition-all duration-300 font-lato font-medium bg-transparent border-none shadow-none data-[state=open]:bg-accent/50">
                       {category.title}
@@ -239,16 +240,13 @@ const FloatingNav = ({
                       </div>
                     </NavigationMenuContent>
                   </NavigationMenuItem>
-                ))}
+                ))} */}
               </NavigationMenuList>
             </NavigationMenu>
           </div>
 
           {/* Action Buttons */}
           <div className="flex items-center space-x-2">
-            <Button variant="ghost" size="icon" className="hover:bg-accent/50 rounded-lg transition-all duration-300">
-              <Search className="w-5 h-5" />
-            </Button>
             <Button
               variant="ghost"
               size="icon"
@@ -304,7 +302,7 @@ const FloatingNav = ({
               ))}
               
               {/* Mobile Category Menus */}
-              {Object.entries(menuCategories).map(([key, category]) => (
+              {/* {Object.entries(menuCategories).map(([key, category]) => (
                 <div key={key} className="space-y-2 mt-4">
                   <div className="px-4 py-2 font-playfair font-semibold text-foreground text-lg border-b border-border/20">
                     {category.title}
@@ -321,7 +319,7 @@ const FloatingNav = ({
                     </Link>
                   ))}
                 </div>
-              ))}
+              ))} */}
               
               <div className="pt-4 mt-4 border-t border-border/30 mx-4">
                 <p className="text-xs text-muted-foreground flex items-center gap-2">

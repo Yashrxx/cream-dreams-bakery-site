@@ -6,6 +6,9 @@ import { useToast } from '@/hooks/use-toast';
 import { useImageManager } from '@/hooks/useImageManager';
 import ImageWithFallback from '@/components/ImageWithFallback';
 import heroChocolateCake from '@/assets/hero-chocolate-cake.jpg';
+import heroChocolateCake_2 from '@/assets/hero-cake.jpg';
+import heroChocolateCake_3 from '@/assets/cake-collection.jpg';
+import { Link } from 'react-router-dom';
 
 interface FeaturedCakesProps {
   onAddToCart?: (item: { id: string; name: string; price: number; image: string }) => void;
@@ -19,29 +22,29 @@ const FeaturedCakes = ({ onAddToCart }: FeaturedCakesProps) => {
   const defaultCakes = [
     {
       id: 1,
-      name: 'Decadent Chocolate Dream',
-      price: 32.99,
-      originalPrice: 42.99,
-      description: 'Rich chocolate layers with premium Belgian cocoa',
+      name: 'Belgian Berry Fudge',
+      price: 34.50,
+      originalPrice: 44.50,
+      description: 'Decadent chocolate fudge cake topped with luscious berries and golden caramel swirls',
       image: heroChocolateCake,
       rating: 4.9,
       isPopular: true,
     },
     {
       id: 2,
-      name: 'Vanilla Bean Elegance',
-      price: 28.99,
-      description: 'Classic vanilla with Madagascar vanilla beans',
-      image: heroChocolateCake,
+      name: 'Rose Gold Vanilla Bloom',
+      price: 30.75,
+      description: 'Elegant vanilla cake adorned with rose gold petals and handcrafted floral accents',
+      image: heroChocolateCake_2,
       rating: 4.8,
       isNew: true,
     },
     {
       id: 3,
-      name: 'Strawberry Bliss',
-      price: 35.99,
-      description: 'Fresh strawberries with cream cheese frosting',
-      image: heroChocolateCake,
+      name: 'Strawberry Velvet Cupcake Set',
+      price: 37.25,
+      description: 'Moist chocolate cupcakes layered with strawberry filling and cream cheese rose frosting',
+      image: heroChocolateCake_3,
       rating: 4.9,
     },
   ];
@@ -80,7 +83,7 @@ const FeaturedCakes = ({ onAddToCart }: FeaturedCakesProps) => {
                   className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
                   fallbackSrc={heroChocolateCake}
                 />
-                
+
                 {/* Badges */}
                 <div className="absolute top-4 left-4 space-y-2">
                   {cake.isNew && (
@@ -129,9 +132,8 @@ const FeaturedCakes = ({ onAddToCart }: FeaturedCakesProps) => {
                       {[...Array(5)].map((_, i) => (
                         <span
                           key={i}
-                          className={`text-lg ${
-                            i < Math.floor(cake.rating) ? 'text-yellow-400' : 'text-gray-300'
-                          }`}
+                          className={`text-lg ${i < Math.floor(cake.rating) ? 'text-yellow-400' : 'text-gray-300'
+                            }`}
                         >
                           ★
                         </span>
@@ -155,7 +157,7 @@ const FeaturedCakes = ({ onAddToCart }: FeaturedCakesProps) => {
                       )}
                     </div>
 
-                    <Button 
+                    <Button
                       className="btn-primary px-6 py-3 font-lato font-medium group hover:shadow-lg transition-all"
                       onClick={() => {
                         const cartItem = {
@@ -185,13 +187,15 @@ const FeaturedCakes = ({ onAddToCart }: FeaturedCakesProps) => {
 
         {/* Call to Action */}
         <div className="text-center mt-16">
-          <Button 
-            variant="outline" 
-            size="lg"
-            className="border-rose-gold text-rose-gold hover:bg-rose-gold hover:text-white font-lato font-semibold px-8 py-3 rounded-full"
-          >
-            View All Cakes
-          </Button>
+          <Link to="/products">
+            <Button
+              variant="outline"
+              size="lg"
+              className="border-rose-gold text-rose-gold hover:bg-rose-gold hover:text-white font-lato font-semibold px-8 py-3 rounded-full"
+            >
+              View All Cakes
+            </Button>
+          </Link>
         </div>
       </div>
     </section>
