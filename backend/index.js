@@ -9,6 +9,7 @@ const app = express();
 const port = process.env.PORT || 5001;
 
 const allowedOrigins = [
+  "http://localhost:3000",
   "http://localhost:3001",
   "https://yashrxx.github.io",
   "https://cream-dreams-bakery-site.onrender.com"
