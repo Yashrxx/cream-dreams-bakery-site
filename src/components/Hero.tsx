@@ -49,7 +49,7 @@ const Hero = () => {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
               <a href="/products">
-                <Button className="btn-primary font-lato font-semibold px-8 py-6 text-lg group">
+                <Button className="btn-primary font-lato font-semibold px-8 py-6 text-lg group" to="/products">
                   Explore Our Cakes
                   <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
