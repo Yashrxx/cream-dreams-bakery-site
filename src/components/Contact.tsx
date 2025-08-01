@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import axios from 'axios';
 import { Phone, Mail, MapPin, Clock, Send, MessageCircle, Calendar } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -14,15 +15,38 @@ const Contact = () => {
     message: '',
   });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const [loading, setLoading] = useState(false);
+  const [responseMsg, setResponseMsg] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission here
-    console.log('Form submitted:', formData);
+    setLoading(true);
+    setResponseMsg('');
+    setErrorMsg('');
+
+    try {
+      const res = await axios.post('https://your-api-url/api/contact', formData); // replace with your backend URL
+      setResponseMsg(res.data.message);
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        occasion: '',
+        message: '',
+      });
+    } catch (err: any) {
+      setErrorMsg(err.response?.data?.error || 'Something went wrong. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const contactInfo = [
@@ -154,10 +178,13 @@ const Contact = () => {
                     />
                   </div>
 
-                  <Button type="submit" className="w-full btn-primary font-lato font-semibold py-3 group">
+                  <Button type="submit" className="w-full btn-primary font-lato font-semibold py-3 group" disabled={loading}>
                     <Send className="w-5 h-5 mr-2 group-hover:translate-x-1 transition-transform" />
-                    Send Custom Order Request
+                    {loading ? 'Sending...' : 'Send Custom Order Request'}
                   </Button>
+
+                  {responseMsg && <p className="text-green-600 text-center font-lato">{responseMsg}</p>}
+                  {errorMsg && <p className="text-red-600 text-center font-lato">{errorMsg}</p>}
                 </form>
               </div>
             </CardContent>
@@ -190,7 +217,6 @@ const Contact = () => {
               ))}
             </div>
 
-            {/* Quick Actions */}
             <Card className="bg-white/90 backdrop-blur-sm border-0 rounded-2xl">
               <CardContent className="p-6">
                 <div className="text-center space-y-4">
@@ -210,7 +236,6 @@ const Contact = () => {
               </CardContent>
             </Card>
 
-            {/* Special Notice */}
             <div className="bg-gradient-to-r from-rose-gold/20 to-peach/30 rounded-2xl p-6 text-center">
               <h4 className="font-playfair text-lg font-semibold text-cocoa mb-2">
                 🎂 Free Consultation
