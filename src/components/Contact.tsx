@@ -33,7 +33,7 @@ const Contact = () => {
     setErrorMsg('');
 
     try {
-      const res = await axios.post('https://your-api-url/api/contact', formData); // replace with your backend URL
+      const res = await axios.post('https://cream-dreams-bakery-site.onrender.com/api/contact', formData);
       setResponseMsg(res.data.message);
       setFormData({
         name: '',
