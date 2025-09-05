@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { useImageManager } from "@/hooks/useImageManager";
 import ImageWithFallback from "@/components/ImageWithFallback";
-import productShowcase from "@/assets/product-fallback.jpg";
+import productShowcase from "@/assets/Product-fallback.jpg";
 
 const LoadingSpinner = () => (
   <div className="flex justify-center items-center py-32">
