@@ -7,6 +7,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useImageManager } from "@/hooks/useImageManager";
 import ImageWithFallback from "@/components/ImageWithFallback";
 import productShowcase from "@/assets/Product-fallback.jpg";
+import { supabase } from "@/integrations/supabase/client";
 
 const LoadingSpinner = () => (
   <div className="flex justify-center items-center py-32">
@@ -53,9 +54,16 @@ const ProductGrid = ({ onAddToCart }: { onAddToCart?: (item: any) => void }) => 
     const fetchProducts = async () => {
       try {
         setLoadingProducts(true);
-        const res = await fetch("https://cream-dreams-bakery-site.onrender.com/api/products");
-        const data = await res.json();
-        setDefaultProducts(data);
+        const { data, error } = await supabase
+          .from('products')
+          .select('*')
+          .order('created_at', { ascending: false });
+        
+        if (error) {
+          console.error("Error fetching products:", error);
+        } else {
+          setDefaultProducts(data || []);
+        }
       } catch (error) {
         console.error("Failed to fetch products:", error);
       } finally {
@@ -67,12 +75,12 @@ const ProductGrid = ({ onAddToCart }: { onAddToCart?: (item: any) => void }) => 
   }, []);
 
   const products = defaultProducts.map((product) => {
-    const imagePath = `${product.category}/${product.imageKey}`;
+    const imagePath = `${product.category}/${product.image_key}`;
     const imageObj = productImages.find(
       (img) => `${img.category}/${img.name}` === imagePath
     );
     const imageFromSupabase = imageObj?.url;
-    const imageFromURL = product.imageURL;
+    const imageFromURL = product.image_url;
 
     return {
       ...product,
@@ -123,7 +131,7 @@ const ProductGrid = ({ onAddToCart }: { onAddToCart?: (item: any) => void }) => 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredProducts.map((product) => (
               <Card
-                key={product._id}
+                key={product.id}
                 className="group card-hover bg-white/80 backdrop-blur-sm border-0 rounded-2xl overflow-hidden"
               >
                 <div className="relative">
@@ -135,12 +143,12 @@ const ProductGrid = ({ onAddToCart }: { onAddToCart?: (item: any) => void }) => 
                   />
 
                   <div className="absolute top-4 left-4 space-y-2">
-                    {product.isNew && (
+                    {product.is_new && (
                       <span className="bg-rose-gold text-white px-3 py-1 rounded-full text-sm font-lato font-medium">
                         New
                       </span>
                     )}
-                    {product.isPopular && (
+                    {product.is_popular && (
                       <span className="bg-peach text-cocoa px-3 py-1 rounded-full text-sm font-lato font-medium">
                         Popular
                       </span>
@@ -153,10 +161,10 @@ const ProductGrid = ({ onAddToCart }: { onAddToCart?: (item: any) => void }) => 
                     </Button>
                   </div>
 
-                  {product.originalPrice && (
+                  {product.original_price && (
                     <div className="absolute bottom-4 left-4">
                       <span className="bg-red-500 text-white px-2 py-1 rounded-full text-sm font-lato font-medium">
-                        Save ${(product.originalPrice - product.price).toFixed(2)}
+                        Save ${(product.original_price - product.price).toFixed(2)}
                       </span>
                     </div>
                   )}
@@ -189,9 +197,9 @@ const ProductGrid = ({ onAddToCart }: { onAddToCart?: (item: any) => void }) => 
                         <span className="font-playfair text-lg font-bold text-rose-gold">
                           Starting from ${product.price}
                         </span>
-                        {product.originalPrice && (
+                        {product.original_price && (
                           <span className="text-gray-400 line-through font-lato">
-                            ${product.originalPrice}
+                            ${product.original_price}
                           </span>
                         )}
                       </div>
@@ -200,7 +208,7 @@ const ProductGrid = ({ onAddToCart }: { onAddToCart?: (item: any) => void }) => 
                         className="btn-primary px-4 py-2 font-lato font-medium group"
                         onClick={() => {
                           const cartItem = {
-                            id: product._id,
+                            id: product.id,
                             name: product.name,
                             price: product.price,
                             image: product.image,
