@@ -5,15 +5,20 @@ import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
-  base: mode === 'production' ? '/cream-dreams-bakery-site/' : '/',
+  // ✅ Always use repo name as base in production
+  base: mode === "production" ? "/cream-dreams-bakery-site/" : "/",
+
   server: {
-    host: "::",
+    host: "0.0.0.0", // ✅ safer than "::" for dev
     port: 8080,
   },
+
   plugins: [
     react(),
-    mode === 'development' && componentTagger(),
+    // ✅ only run componentTagger in dev to avoid prod issues
+    mode === "development" && componentTagger(),
   ].filter(Boolean),
+
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
