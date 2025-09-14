@@ -14,6 +14,10 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu"
 
+import heroChocolateCake from "@/assets/hero-chocolate-cake.jpg";
+import cakeCollection from "@/assets/cake-collection.jpg";
+import heroCake from "@/assets/hero-cake.jpg";
+
 interface CartItem {
   id: string;
   name: string;
@@ -46,14 +50,14 @@ const FloatingNav = ({
       name: 'Chocolate Cake',
       price: 25.99,
       quantity: 2,
-      image: '/src/assets/hero-chocolate-cake.jpg'
+      image: heroChocolateCake
     },
     {
       id: '2',
       name: 'Vanilla Cupcake',
       price: 4.99,
       quantity: 1,
-      image: '/src/assets/cake-collection.jpg'
+      image: cakeCollection
     }
   ]);
 
@@ -64,7 +68,7 @@ const FloatingNav = ({
       id: '3',
       name: 'Red Velvet Cake',
       price: 29.99,
-      image: '/src/assets/hero-cake.jpg',
+      image: heroCake,
       rating: 5
     }
   ]);

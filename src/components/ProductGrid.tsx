@@ -23,6 +23,33 @@ const ProductGrid = ({ onAddToCart }: { onAddToCart?: (item: any) => void }) => 
   const [activeCategory, setActiveCategory] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
 
+  // Static fallback products from local assets (used if Supabase returns no data)
+  const birthdayAssets = import.meta.glob<{ default: string }>("@/assets/birthday/*", { eager: true });
+  const weddingAssets = import.meta.glob<{ default: string }>("@/assets/weddings/*", { eager: true });
+  const customAssets = import.meta.glob<{ default: string }>("@/assets/custom/*", { eager: true });
+  const cupcakesAssets = import.meta.glob<{ default: string }>("@/assets/cupcakes/*", { eager: true });
+  const dessertsAssets = import.meta.glob<{ default: string }>("@/assets/desserts/*", { eager: true });
+
+  const buildFallback = (mods: Record<string, { default: string }>, category: string) =>
+    Object.values(mods).map((m, idx) => ({
+      id: `${category}-${idx + 1}`,
+      name: `${category[0].toUpperCase() + category.slice(1)} Delight ${idx + 1}`,
+      description: 'Handcrafted with premium ingredients.',
+      category,
+      price: 25 + (idx % 6) * 5,
+      rating: 4.8,
+      reviews: 120 + idx,
+      image: m.default,
+    }));
+
+  const fallbackProducts = [
+    ...buildFallback(birthdayAssets, 'birthday'),
+    ...buildFallback(weddingAssets, 'weddings'),
+    ...buildFallback(customAssets, 'custom'),
+    ...buildFallback(cupcakesAssets, 'cupcakes'),
+    ...buildFallback(dessertsAssets, 'desserts'),
+  ];
+
   // ✅ Proper usage of hooks (NO loops)
   const birthday = useImageManager("product-images", "birthday");
   const wedding = useImageManager("product-images", "weddings");
@@ -59,10 +86,11 @@ const ProductGrid = ({ onAddToCart }: { onAddToCart?: (item: any) => void }) => 
           .select('*')
           .order('created_at', { ascending: false });
         
-        if (error) {
-          console.error("Error fetching products:", error);
+        if (error || !data || data.length === 0) {
+          console.warn("Using local fallback products due to Supabase unavailability or empty dataset.", error);
+          setDefaultProducts(fallbackProducts);
         } else {
-          setDefaultProducts(data || []);
+          setDefaultProducts(data);
         }
       } catch (error) {
         console.error("Failed to fetch products:", error);
@@ -74,17 +102,18 @@ const ProductGrid = ({ onAddToCart }: { onAddToCart?: (item: any) => void }) => 
     fetchProducts();
   }, []);
 
-  const products = defaultProducts.map((product) => {
-    const imagePath = `${product.category}/${product.image_key}`;
-    const imageObj = productImages.find(
-      (img) => `${img.category}/${img.name}` === imagePath
-    );
-    const imageFromSupabase = imageObj?.url;
-    const imageFromURL = product.image_url;
+  const products = defaultProducts.map((product: any) => {
+    const imagePath = product.image_key ? `${product.category}/${product.image_key}` : undefined;
+    const imageObj = imagePath
+      ? productImages.find((img) => `${img.category}/${img.name}` === imagePath)
+      : undefined;
+    const imageFromSupabase = imageObj?.url as string | undefined;
+    const imageFromURL = (product as any).image_url as string | undefined;
+    const localImage = (product as any).image as string | undefined;
 
     return {
       ...product,
-      image: imageFromSupabase || imageFromURL || productShowcase,
+      image: imageFromSupabase || imageFromURL || localImage || productShowcase,
     };
   });
 
