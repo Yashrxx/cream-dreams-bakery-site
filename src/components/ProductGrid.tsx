@@ -28,7 +28,7 @@ const ProductGrid = ({ onAddToCart }: { onAddToCart?: (item: any) => void }) => 
   const weddingAssets = import.meta.glob<{ default: string }>("@/assets/weddings/*", { eager: true });
   const customAssets = import.meta.glob<{ default: string }>("@/assets/custom/*", { eager: true });
   const cupcakesAssets = import.meta.glob<{ default: string }>("@/assets/cupcakes/*", { eager: true });
-  const dessertsAssets = import.meta.glob<{ default: string }>("@/assets/desserts/*", { eager: true });
+  
 
   const buildFallback = (mods: Record<string, { default: string }>, category: string) =>
     Object.values(mods).map((m, idx) => ({
@@ -47,7 +47,7 @@ const ProductGrid = ({ onAddToCart }: { onAddToCart?: (item: any) => void }) => 
     ...buildFallback(weddingAssets, 'weddings'),
     ...buildFallback(customAssets, 'custom'),
     ...buildFallback(cupcakesAssets, 'cupcakes'),
-    ...buildFallback(dessertsAssets, 'desserts'),
+    
   ];
 
   // ✅ Proper usage of hooks (NO loops)
@@ -55,18 +55,18 @@ const ProductGrid = ({ onAddToCart }: { onAddToCart?: (item: any) => void }) => 
   const wedding = useImageManager("product-images", "weddings");
   const custom = useImageManager("product-images", "custom");
   const cupcakes = useImageManager("product-images", "cupcakes");
-  const desserts = useImageManager("product-images", "desserts");
+  
 
   const productImages = [
     ...birthday.images,
     ...wedding.images,
     ...custom.images,
     ...cupcakes.images,
-    ...desserts.images,
+    
   ];
 
   const loadingImages =
-    birthday.loading || wedding.loading || custom.loading || cupcakes.loading || desserts.loading;
+    birthday.loading || wedding.loading || custom.loading || cupcakes.loading;
 
   const categories = [
     { id: "all", name: "All" },
@@ -74,7 +74,7 @@ const ProductGrid = ({ onAddToCart }: { onAddToCart?: (item: any) => void }) => 
     { id: "weddings", name: "Wedding Cakes" },
     { id: "custom", name: "Custom Cakes" },
     { id: "cupcakes", name: "Cupcakes" },
-    { id: "desserts", name: "Desserts / Treats" },
+    
   ];
 
   useEffect(() => {
@@ -86,12 +86,35 @@ const ProductGrid = ({ onAddToCart }: { onAddToCart?: (item: any) => void }) => 
           .select('*')
           .order('created_at', { ascending: false });
         
-        if (error || !data || data.length === 0) {
-          console.warn("Using local fallback products due to Supabase unavailability or empty dataset.", error);
-          setDefaultProducts(fallbackProducts);
-        } else {
-          setDefaultProducts(data);
+        if (error) {
+          console.warn("Supabase fetch error, will use fallbacks to fill:", error);
         }
+
+        // Ensure exactly 5 items per category (birthday, weddings, custom, cupcakes)
+        const cats = categories.filter(c => c.id !== "all").map(c => c.id);
+
+        const fallbackByCategory = fallbackProducts.reduce((acc: Record<string, any[]>, p: any) => {
+          (acc[p.category] ||= []).push(p);
+          return acc;
+        }, {} as Record<string, any[]>);
+
+        const supaData = Array.isArray(data) ? data : [];
+        const merged: any[] = [];
+
+        for (const cat of cats) {
+          // Keep up to 5 from Supabase, then fill the rest from local fallbacks
+          const supaAll = supaData.filter((p: any) => p.category === cat);
+          const supaItems = supaAll.slice(0, 5);
+          const needed = Math.max(0, 5 - supaItems.length);
+          const fb = (fallbackByCategory[cat] || [])
+            .filter((f: any) => !supaItems.some((s: any) => s.name === f.name))
+            .slice(0, needed);
+
+          merged.push(...supaItems, ...fb);
+        }
+
+        setDefaultProducts(merged);
+
       } catch (error) {
         console.error("Failed to fetch products:", error);
       } finally {
