@@ -28,7 +28,7 @@ const ProductGrid = ({ onAddToCart }: { onAddToCart?: (item: any) => void }) => 
   const weddingAssets = import.meta.glob<{ default: string }>("@/assets/weddings/*", { eager: true });
   const customAssets = import.meta.glob<{ default: string }>("@/assets/custom/*", { eager: true });
   const cupcakesAssets = import.meta.glob<{ default: string }>("@/assets/cupcakes/*", { eager: true });
-  
+  const dessertsAssets = import.meta.glob<{ default: string }>("@/assets/desserts/*", { eager: true });
 
   const buildFallback = (mods: Record<string, { default: string }>, category: string) =>
     Object.values(mods).map((m, idx) => ({
@@ -47,7 +47,7 @@ const ProductGrid = ({ onAddToCart }: { onAddToCart?: (item: any) => void }) => 
     ...buildFallback(weddingAssets, 'weddings'),
     ...buildFallback(customAssets, 'custom'),
     ...buildFallback(cupcakesAssets, 'cupcakes'),
-    
+    ...buildFallback(dessertsAssets, 'desserts'),
   ];
 
   // ✅ Proper usage of hooks (NO loops)
@@ -55,18 +55,18 @@ const ProductGrid = ({ onAddToCart }: { onAddToCart?: (item: any) => void }) => 
   const wedding = useImageManager("product-images", "weddings");
   const custom = useImageManager("product-images", "custom");
   const cupcakes = useImageManager("product-images", "cupcakes");
-  
+  const desserts = useImageManager("product-images", "desserts");
 
   const productImages = [
     ...birthday.images,
     ...wedding.images,
     ...custom.images,
     ...cupcakes.images,
-    
+    ...desserts.images,
   ];
 
   const loadingImages =
-    birthday.loading || wedding.loading || custom.loading || cupcakes.loading;
+    birthday.loading || wedding.loading || custom.loading || cupcakes.loading || desserts.loading;
 
   const categories = [
     { id: "all", name: "All" },
@@ -74,7 +74,7 @@ const ProductGrid = ({ onAddToCart }: { onAddToCart?: (item: any) => void }) => 
     { id: "weddings", name: "Wedding Cakes" },
     { id: "custom", name: "Custom Cakes" },
     { id: "cupcakes", name: "Cupcakes" },
-    
+    { id: "desserts", name: "Desserts / Treats" },
   ];
 
   useEffect(() => {
